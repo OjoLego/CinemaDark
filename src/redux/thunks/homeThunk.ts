@@ -2,13 +2,12 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { client } from '../../api/request';
 import { GenresResponse, MoviesResponse } from '../../utils/types';
 
-export const fetchPopularMovies = createAsyncThunk<MoviesResponse>(
-  'home/fetchPopularMovies',
+export const fetchTrendingMovies = createAsyncThunk<MoviesResponse>(
+  'home/fetchTrendingMovies',
   async () => {
-    const res = await client.get<MoviesResponse>('/movie/popular', {
+    const res = await client.get<MoviesResponse>('/trending/movie/day', {
       params: {
         language: 'en-US',
-        page: 1,
       },
     });
 

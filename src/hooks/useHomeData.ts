@@ -15,7 +15,7 @@ export const useHomeData = () => {
   const genreMap = useSelector(genreMapSelector);
 
   useEffect(() => {
-    if (home.popular.length <= 1) {
+    if (home.trending.length <= 1) {
       return;
     }
 
@@ -24,7 +24,7 @@ export const useHomeData = () => {
     }, 10000);
 
     return () => clearInterval(interval);
-  }, [dispatch, home.popular.length]);
+  }, [dispatch, home.trending.length]);
 
   const nowPlaying = home.nowPlaying.map(movie => ({
     ...movie,

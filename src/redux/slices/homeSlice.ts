@@ -1,24 +1,24 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { Genre, Movie } from '../../utils/types';
 import {
-  fetchPopularMovies,
+  fetchTrendingMovies,
   fetchNowPlayingMovies,
   fetchTopRatedMovies,
   fetchMovieGenres,
 } from '../thunks/homeThunk';
 
 type HomeState = {
-  popular: Movie[];
+  trending: Movie[];
   nowPlaying: Movie[];
   topRated: Movie[];
   genres: Genre[];
 
-  loadingPopular: boolean;
+  loadingTrending: boolean;
   loadingNowPlaying: boolean;
   loadingTopRated: boolean;
   loadingGenres: boolean;
 
-  errorPopular: string | null;
+  errorTrending: string | null;
   errorNowPlaying: string | null;
   errorTopRated: string | null;
   errorGenres: string | null;
@@ -27,17 +27,17 @@ type HomeState = {
 };
 
 const initialState: HomeState = {
-  popular: [],
+  trending: [],
   nowPlaying: [],
   topRated: [],
   genres: [],
 
-  loadingPopular: false,
+  loadingTrending: false,
   loadingNowPlaying: false,
   loadingTopRated: false,
   loadingGenres: false,
 
-  errorPopular: null,
+  errorTrending: null,
   errorNowPlaying: null,
   errorTopRated: null,
   errorGenres: null,
@@ -50,26 +50,26 @@ const homeSlice = createSlice({
   initialState,
   reducers: {
     nextHeroMovie: state => {
-      if (!state.popular.length) {
+      if (!state.trending.length) {
         return;
       }
 
-      state.heroIndex = (state.heroIndex + 1) % state.popular.length;
+      state.heroIndex = (state.heroIndex + 1) % state.trending.length;
     },
   },
   extraReducers: builder => {
     builder
-      .addCase(fetchPopularMovies.pending, state => {
-        state.loadingPopular = true;
+      .addCase(fetchTrendingMovies.pending, state => {
+        state.loadingTrending = true;
       })
-      .addCase(fetchPopularMovies.fulfilled, (state, action) => {
-        state.loadingPopular = false;
-        state.popular = action.payload.results;
+      .addCase(fetchTrendingMovies.fulfilled, (state, action) => {
+        state.loadingTrending = false;
+        state.trending = action.payload.results;
         state.heroIndex = 0;
       })
-      .addCase(fetchPopularMovies.rejected, (state, action) => {
-        state.loadingPopular = false;
-        state.errorPopular = action.error.message ?? null;
+      .addCase(fetchTrendingMovies.rejected, (state, action) => {
+        state.loadingTrending = false;
+        state.errorTrending = action.error.message ?? null;
       })
 
       .addCase(fetchNowPlayingMovies.pending, state => {

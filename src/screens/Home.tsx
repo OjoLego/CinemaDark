@@ -14,7 +14,7 @@ import { TopRatedSection } from '../components/organisms/TopRatedSection';
 
 import { AppDispatch } from '../redux/store';
 import {
-  fetchPopularMovies,
+  fetchTrendingMovies,
   fetchNowPlayingMovies,
   fetchTopRatedMovies,
   fetchMovieGenres,
@@ -32,15 +32,15 @@ const Home = () => {
   const { getImageUrl } = useTmdbImage();
 
   function onRefresh() {
-    dispatch(fetchPopularMovies());
+    dispatch(fetchTrendingMovies());
     dispatch(fetchNowPlayingMovies());
     dispatch(fetchTopRatedMovies());
     dispatch(fetchMovieGenres());
   }
 
   useEffect(() => {
-    if (!home.popular.length) {
-      dispatch(fetchPopularMovies());
+    if (!home.trending.length) {
+      dispatch(fetchTrendingMovies());
     }
 
     if (!home.nowPlaying.length) {
@@ -56,7 +56,7 @@ const Home = () => {
     }
   }, [
     dispatch,
-    home.popular.length,
+    home.trending.length,
     home.nowPlaying.length,
     home.topRated.length,
     home.genres.length,
@@ -86,7 +86,7 @@ const Home = () => {
           <RefreshControl refreshing={false} onRefresh={onRefresh} />
         }
       >
-        {home.loadingPopular ? (
+        {home.loadingTrending ? (
           <HeroSkeleton />
         ) : home.heroMovie ? (
           <HomeHeroBanner

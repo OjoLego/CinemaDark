@@ -5,7 +5,7 @@ export const homeSelector = (reduxState: RootState) => reduxState.home;
 
 export const heroMovieSelector = createSelector(
   [homeSelector],
-  home => home.popular[home.heroIndex],
+  home => home.trending[home.heroIndex],
 );
 
 export const genreMapSelector = createSelector([homeSelector], state =>
