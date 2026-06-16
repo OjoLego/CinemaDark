@@ -1,22 +1,16 @@
 import React from 'react';
-import {
-  Image,
-  ImageSourcePropType,
-  Pressable,
-  StyleSheet,
-  View,
-} from 'react-native';
+import { Image, Pressable, StyleSheet, View } from 'react-native';
 
 import { AppFontFamily, Typography } from '../../atoms/Typography';
 import { COLORS } from '../../../utils/colors';
 import { Rating } from '../../atoms/Rating';
 
 type NowPlayingCardProps = {
-  image: ImageSourcePropType;
+  image: string;
   title: string;
-  genre: string;
-  duration: string;
-  rating: number;
+  genre: string[];
+  duration?: string;
+  rating: number | string;
   width?: number;
   onPress?: () => void;
 };
@@ -40,7 +34,11 @@ export const NowPlayingCard = ({
       ]}
     >
       <View style={styles.imageContainer}>
-        <Image source={image} style={styles.image} resizeMode="cover" />
+        <Image
+          source={{ uri: image }}
+          style={styles.image}
+          resizeMode="cover"
+        />
 
         <View style={styles.ratingContainer}>
           <Rating
@@ -65,7 +63,7 @@ export const NowPlayingCard = ({
         color={COLORS.text2}
         numberOfLines={1}
       >
-        {genre} • {duration}
+        {genre.join(' • ')} {duration}
       </Typography>
     </Pressable>
   );

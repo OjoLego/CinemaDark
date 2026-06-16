@@ -1,68 +1,67 @@
-import { ScrollView, StyleSheet } from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useDispatch } from 'react-redux';
+
 import { COLORS } from '../utils/colors';
 import { Header } from '../components/molecules/Header';
 import { ICONS } from '../utils/icons';
 import { AppFontFamily } from '../components/atoms/Typography';
-import { IMAGES } from '../utils/images';
 import { HomeHeroBanner } from '../components/organisms/HomeHeroBanner';
 import { Spacer } from '../components/atoms/Spacer';
 import { NowPlayingSection } from '../components/organisms/NowPlayingSection';
 import { TopRatedSection } from '../components/organisms/TopRatedSection';
 
-const movies = [
-  {
-    id: '1',
-    image: IMAGES.Home,
-    title: 'Michael',
-    rating: 8.5,
-    genre: 'Drama',
-    duration: '2h 15m',
-  },
-  {
-    id: '2',
-    image: IMAGES.Home,
-    title: 'Dune: Part Two',
-    rating: 8.7,
-    genre: 'Sci-Fi',
-    duration: '2h 46m',
-  },
-  {
-    id: '3',
-    image: IMAGES.Home,
-    title: 'Oppenheimer',
-    rating: 8.8,
-    genre: 'Drama',
-    duration: '3h',
-  },
-];
+import { AppDispatch } from '../redux/store';
+import {
+  fetchPopularMovies,
+  fetchNowPlayingMovies,
+  fetchTopRatedMovies,
+  fetchMovieGenres,
+} from '../redux/thunks/homeThunk';
 
-const topRatedMovies = [
-  {
-    id: '1',
-    image: IMAGES.Home,
-    title: 'The Orchestrator',
-    rating: 9.8,
-    tag: 'All Time Classic',
-  },
-  {
-    id: '2',
-    image: IMAGES.Home,
-    title: 'Michael',
-    rating: 8.9,
-    tag: 'Biography',
-  },
-  {
-    id: '3',
-    image: IMAGES.Home,
-    title: 'Dune: Part Two',
-    rating: 8.7,
-    tag: 'Sci-Fi',
-  },
-];
+import { useTmdbImage } from '../hooks/useTmdbImage';
+import { HeroSkeleton } from '../components/skeletons/HeroSkeleton';
+import { MovieCardSkeleton } from '../components/skeletons/MovieCardSkeleton';
+import { useHomeData } from '../hooks/useHomeData';
 
 const Home = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const home = useHomeData();
+
+  const { getImageUrl } = useTmdbImage();
+
+  function onRefresh() {
+    dispatch(fetchPopularMovies());
+    dispatch(fetchNowPlayingMovies());
+    dispatch(fetchTopRatedMovies());
+    dispatch(fetchMovieGenres());
+  }
+
+  useEffect(() => {
+    if (!home.popular.length) {
+      dispatch(fetchPopularMovies());
+    }
+
+    if (!home.nowPlaying.length) {
+      dispatch(fetchNowPlayingMovies());
+    }
+
+    if (!home.topRated.length) {
+      dispatch(fetchTopRatedMovies());
+    }
+
+    if (!home.genres.length) {
+      dispatch(fetchMovieGenres());
+    }
+  }, [
+    dispatch,
+    home.popular.length,
+    home.nowPlaying.length,
+    home.topRated.length,
+    home.genres.length,
+  ]);
+
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <Header
@@ -76,44 +75,60 @@ const Home = () => {
         rightIcons={[
           {
             icon: <ICONS.Search />,
-            onPress: () => {
-              console.log('Search pressed');
-            },
+            onPress: () => console.log('Search pressed'),
           },
         ]}
       />
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <HomeHeroBanner
-          image={IMAGES.Home}
-          title="Michael"
-          description="Michael follows the extraordinary life and career of Michael Jackson, tracing his journey from a gifted young performer in the Jackson 5 to becoming one of the most influential entertainers in music history. The film explores his groundbreaking artistry, record-breaking achievements, iconic performances, and the personal challenges that accompanied global fame, offering an intimate look at the man behind the legend."
-          rating={8.9}
-          onPlayTrailer={() => {
-            console.log('Play Trailer Pressed');
-          }}
-          onMoreInfo={() => {
-            console.log('More Info pressed');
-          }}
-        />
-        <NowPlayingSection
-          title="Now Playing"
-          movies={movies}
-          onMoviePress={movie => {
-            console.log(movie.id);
-          }}
-        />
+
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl refreshing={false} onRefresh={onRefresh} />
+        }
+      >
+        {home.loadingPopular ? (
+          <HeroSkeleton />
+        ) : home.heroMovie ? (
+          <HomeHeroBanner
+            image={{
+              uri: getImageUrl(home.heroMovie.poster_path, 'w780') ?? '',
+            }}
+            title={home.heroMovie.title}
+            description={home.heroMovie.overview}
+            rating={home.heroMovie.vote_average}
+          />
+        ) : null}
+
+        {home.loadingNowPlaying ? (
+          <View style={styles.skeleton}>
+            <MovieCardSkeleton />
+            <MovieCardSkeleton />
+            <MovieCardSkeleton />
+          </View>
+        ) : home.nowPlaying.length > 0 ? (
+          <NowPlayingSection
+            title="Now Playing"
+            movies={home.nowPlaying}
+            onMoviePress={movie => console.log(movie.id)}
+          />
+        ) : null}
+
         <Spacer height={48} />
-        <TopRatedSection
-          title="Top Rated"
-          actionText="View All"
-          onActionPress={() => {
-            console.log('View all Pressed');
-          }}
-          movies={topRatedMovies}
-          onMoviePress={movie => {
-            console.log('Selected movie:', movie.title);
-          }}
-        />
+
+        {home.loadingTopRated ? (
+          <View style={styles.skeleton}>
+            <MovieCardSkeleton />
+            <MovieCardSkeleton />
+          </View>
+        ) : home.topRated.length > 0 ? (
+          <TopRatedSection
+            title="Top Rated"
+            actionText="View All"
+            movies={home.topRated}
+            onActionPress={() => console.log('View All')}
+            onMoviePress={movie => console.log(movie.id)}
+          />
+        ) : null}
       </ScrollView>
     </SafeAreaView>
   );
@@ -126,4 +141,26 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.Background,
   },
+
+  center: {
+    height: 300,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  errorText: {
+    color: 'red',
+    textAlign: 'center',
+    marginVertical: 12,
+  },
+
+  sectionError: {
+    color: 'red',
+    textAlign: 'center',
+    marginTop: 10,
+  },
+  marginVertical: {
+    marginVertical: 10,
+  },
+  skeleton: { flexDirection: 'row', gap: 12, paddingHorizontal: 16 },
 });

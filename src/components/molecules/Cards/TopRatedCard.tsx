@@ -1,18 +1,12 @@
 import React from 'react';
-import {
-  ImageBackground,
-  ImageSourcePropType,
-  Pressable,
-  StyleSheet,
-  View,
-} from 'react-native';
+import { ImageBackground, Pressable, StyleSheet, View } from 'react-native';
 
 import { Typography, AppFontFamily } from '../../atoms/Typography';
 import { COLORS } from '../../../utils/colors';
 import { Rating } from '../../atoms/Rating';
 
 type TopRatedCardProps = {
-  image: ImageSourcePropType;
+  image: string;
   title: string;
   rating: number | string;
   tag?: string;
@@ -56,9 +50,10 @@ export const TopRatedCard = ({
       style={({ pressed }) => pressed && styles.pressed}
     >
       <ImageBackground
-        source={image}
+        source={{ uri: image }}
         style={[styles.image, { aspectRatio: config.aspectRatio }]}
         imageStyle={styles.imageBorder}
+        resizeMode="cover"
       >
         <View
           style={[

@@ -1,17 +1,11 @@
 import React from 'react';
-import { StyleSheet, View, ImageSourcePropType } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import SectionHeader from '../molecules/SectionHeader';
 import { TopRatedCard } from '../molecules/Cards/TopRatedCard';
 import { Spacer } from '../atoms/Spacer';
-
-type Movie = {
-  id: string;
-  image: ImageSourcePropType;
-  title: string;
-  rating: number;
-  tag?: string;
-};
+import { Movie } from '../../utils/types';
+import { useTmdbImage } from '../../hooks/useTmdbImage';
 
 type TopRatedSectionProps = {
   title: string;
@@ -28,6 +22,7 @@ export const TopRatedSection = ({
   onActionPress,
   onMoviePress,
 }: TopRatedSectionProps) => {
+  const { getImageUrl } = useTmdbImage();
   const featuredMovie = movies[0];
   const secondaryMovies = movies.slice(1, 3);
 
@@ -46,10 +41,10 @@ export const TopRatedSection = ({
       <Spacer height={24} />
 
       <TopRatedCard
-        image={featuredMovie.image}
+        image={getImageUrl(featuredMovie.poster_path, 'w500') ?? ''}
         title={featuredMovie.title}
-        rating={featuredMovie.rating}
-        tag={featuredMovie.tag}
+        rating={featuredMovie.vote_average}
+        tag="All Time Classic"
         variant="featured"
         onPress={() => onMoviePress?.(featuredMovie)}
       />
@@ -62,9 +57,9 @@ export const TopRatedSection = ({
             {secondaryMovies.map(movie => (
               <View key={movie.id} style={styles.bottomCardWrapper}>
                 <TopRatedCard
-                  image={movie.image}
+                  image={getImageUrl(movie.poster_path, 'w500') ?? ''}
                   title={movie.title}
-                  rating={movie.rating}
+                  rating={movie.vote_average.toFixed(1)}
                   variant="compact"
                   onPress={() => onMoviePress?.(movie)}
                 />

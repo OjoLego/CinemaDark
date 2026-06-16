@@ -3,15 +3,8 @@ import { FlatList, StyleSheet, View } from 'react-native';
 
 import SectionHeader from '../molecules/SectionHeader';
 import { NowPlayingCard } from '../molecules/Cards/NowPlayingCard';
-
-type Movie = {
-  id: string;
-  image: any;
-  title: string;
-  rating: number;
-  genre: string;
-  duration: string;
-};
+import { Movie } from '../../utils/types';
+import { useTmdbImage } from '../../hooks/useTmdbImage';
 
 type NowPlayingSectionProps = {
   title: string;
@@ -28,6 +21,7 @@ export const NowPlayingSection = ({
   onActionPress,
   onMoviePress,
 }: NowPlayingSectionProps) => {
+  const { getImageUrl } = useTmdbImage();
   return (
     <View>
       <View style={styles.headerContainer}>
@@ -42,14 +36,13 @@ export const NowPlayingSection = ({
         <FlatList
           horizontal
           data={movies}
-          keyExtractor={item => item.id}
+          keyExtractor={item => String(item.id)}
           renderItem={({ item }) => (
             <NowPlayingCard
-              image={item.image}
+              image={getImageUrl(item.poster_path, 'w500') ?? ''}
               title={item.title}
-              rating={item.rating}
-              genre={item.genre}
-              duration={item.duration}
+              rating={item.vote_average.toFixed(1)}
+              genre={item.genreText}
               onPress={() => onMoviePress?.(item)}
             />
           )}

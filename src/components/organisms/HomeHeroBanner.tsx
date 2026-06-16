@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  ImageBackground,
-  StyleSheet,
-  View,
-  ImageSourcePropType,
-} from 'react-native';
+import { ImageBackground, StyleSheet, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 import { ICONS } from '../../utils/icons';
@@ -16,7 +11,7 @@ import { PrimaryButton } from '../molecules/Button/PrimaryButton';
 import { SecondaryButton } from '../molecules/Button/SecondaryButton';
 
 type HomeHeroBannerProps = {
-  image: ImageSourcePropType;
+  image: { uri: string };
   title: string;
   description: string;
   rating: number;
@@ -40,7 +35,7 @@ export const HomeHeroBanner = ({
       />
 
       <View style={styles.overlayContent}>
-        <TrendingRating rating={rating} />
+        <TrendingRating rating={rating.toFixed(1)} />
 
         <HomeMovieInfo title={title} description={description} />
 
@@ -84,7 +79,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    height: 50,
+    height: 1000,
   },
 
   actionButtons: {
