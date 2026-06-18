@@ -14,3 +14,12 @@ export const genreMapSelector = createSelector([homeSelector], state =>
     return acc;
   }, {}),
 );
+
+export const nowPlayingSelector = createSelector(
+  [homeSelector, genreMapSelector],
+  (home, genreMap) =>
+    home.nowPlaying.map(movie => ({
+      ...movie,
+      genreText: movie.genre_ids?.map(id => genreMap[id]).filter(Boolean) ?? [],
+    })),
+);
