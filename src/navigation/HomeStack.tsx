@@ -6,10 +6,14 @@ import {
 import Home from '../screens/Home';
 import Details from '../screens/Details';
 import { RouteProp } from '@react-navigation/native';
+import CastList from '../screens/CastList';
 
 export type HomeStackParamList = {
   Home: undefined;
   Details: {
+    movieId: number;
+  };
+  CastList: {
     movieId: number;
   };
 };
@@ -21,10 +25,7 @@ export type HomeNavigationProp = NativeStackNavigationProp<
 
 export type DetailsRouteProp = RouteProp<HomeStackParamList, 'Details'>;
 
-export type DetailsNavigationProp = NativeStackNavigationProp<
-  HomeStackParamList,
-  'Details'
->;
+export type CastListRouteProp = RouteProp<HomeStackParamList, 'CastList'>;
 
 export const HomeStack = createNativeStackNavigator<HomeStackParamList>({
   screenOptions: {
@@ -33,5 +34,6 @@ export const HomeStack = createNativeStackNavigator<HomeStackParamList>({
   screens: {
     Home,
     Details,
+    CastList,
   },
 });

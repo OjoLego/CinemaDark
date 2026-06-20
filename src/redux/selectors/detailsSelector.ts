@@ -26,3 +26,9 @@ export const selectMovieDetailsViewModel = (movieId: number) =>
           ?.name ?? '',
     };
   });
+
+export const makeTopCastSelector = (movieId: number) =>
+  createSelector(
+    [detailsSelector],
+    details => details.cache[movieId]?.credits?.cast ?? [],
+  );

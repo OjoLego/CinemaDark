@@ -98,7 +98,11 @@ const Details = () => {
               <Spacer height={48} />
               <TopCastSection
                 cast={movie?.topCast ?? []}
-                onViewAll={() => console.log('View All')}
+                onViewAll={() =>
+                  navigation.navigate('CastList', {
+                    movieId,
+                  })
+                }
               />
               <Spacer height={24} />
               <View style={styles.actionButtons}>
