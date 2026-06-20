@@ -1,11 +1,11 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import Home from '../screens/Home';
-import Search from '../screens/Search';
-import WatchList from '../screens/WatchList';
 import { ICONS } from '../utils/icons';
 import { COLORS } from '../utils/colors';
 import { AppFontFamily } from '../components/atoms/Typography';
+import { HomeStack } from './HomeStack';
+import { SearchStack } from './SearchStack';
+import { WatchListStack } from './WatchListStack';
 
 export const BottomTabs = createBottomTabNavigator({
   screenOptions: {
@@ -27,24 +27,24 @@ export const BottomTabs = createBottomTabNavigator({
   },
 
   screens: {
-    Home: {
-      screen: Home,
+    HomeTab: {
+      screen: HomeStack,
       options: {
         tabBarIcon: ({ focused }) =>
           focused ? <ICONS.Home_Fill /> : <ICONS.Home />,
       },
     },
 
-    Search: {
-      screen: Search,
+    SearchTab: {
+      screen: SearchStack,
       options: {
         tabBarIcon: ({ focused }) =>
           focused ? <ICONS.Search_Fill /> : <ICONS.Search />,
       },
     },
 
-    WatchList: {
-      screen: WatchList,
+    WatchListTab: {
+      screen: WatchListStack,
       options: {
         tabBarIcon: ({ focused }) =>
           focused ? <ICONS.Watch_List_Fill /> : <ICONS.Watch_List />,

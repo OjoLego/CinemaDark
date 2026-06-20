@@ -21,5 +21,4 @@ export const COLORS = {
   text1: '#E5E2E1',
   text2: '#D0C6AB',
   textDark: '#3A3000',
-  secondaryText: '#D0C6AB',
 };

@@ -1,6 +1,7 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import homeReducer from './slices/homeSlice';
 import tmdbReducer from './slices/configSlice';
+import detailsReducer from './slices/detailsSlice';
 import {
   FLUSH,
   PAUSE,
@@ -16,6 +17,7 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 const combinedReducers = combineReducers({
   tmdb: tmdbReducer,
   home: homeReducer,
+  details: detailsReducer,
 });
 
 const persistConfig = {

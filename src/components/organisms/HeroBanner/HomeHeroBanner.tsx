@@ -2,13 +2,14 @@ import React from 'react';
 import { ImageBackground, StyleSheet, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
-import { ICONS } from '../../utils/icons';
-import { AppFontFamily } from '../atoms/Typography';
-import { Spacer } from '../atoms/Spacer';
-import TrendingRating from '../molecules/TrendingRating';
-import HomeMovieInfo from '../molecules/Texts/HomeMovieInfo';
-import { PrimaryButton } from '../molecules/Button/PrimaryButton';
-import { SecondaryButton } from '../molecules/Button/SecondaryButton';
+import { ICONS } from '../../../utils/icons';
+import { AppFontFamily } from '../../atoms/Typography';
+import { Spacer } from '../../atoms/Spacer';
+import TrendingRating from '../../molecules/TrendingRating';
+import HomeMovieInfo from '../../molecules/Texts/HomeMovieInfo';
+import { PrimaryButton } from '../../molecules/Button/PrimaryButton';
+import { SecondaryButton } from '../../molecules/Button/SecondaryButton';
+import { COLORS } from '../../../utils/colors';
 
 type HomeHeroBannerProps = {
   image: { uri: string };
@@ -30,7 +31,7 @@ export const HomeHeroBanner = ({
   return (
     <ImageBackground source={image} style={styles.heroImage} resizeMode="cover">
       <LinearGradient
-        colors={['transparent', '#000']}
+        colors={['transparent', COLORS.Background]}
         style={styles.imageGradient}
       />
 

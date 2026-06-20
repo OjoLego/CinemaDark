@@ -10,6 +10,7 @@ type RatingProps = {
   fontFamily?: AppFontFamily;
   fontSize?: number;
   color?: string;
+  variant?: 'plain' | 'badge';
 };
 
 export const Rating = ({
@@ -17,9 +18,12 @@ export const Rating = ({
   fontFamily = AppFontFamily.InterBold,
   fontSize = 16,
   color = COLORS.Primary,
+  variant = 'plain',
 }: RatingProps) => {
   return (
-    <View style={styles.container}>
+    <View
+      style={[styles.container, variant === 'badge' && styles.badgeContainer]}
+    >
       <ICONS.Star />
 
       <Typography fontFamily={fontFamily} fontSize={fontSize} color={color}>
@@ -34,5 +38,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
+  },
+  badgeContainer: {
+    paddingVertical: 4,
+    paddingHorizontal: 12,
+    backgroundColor: COLORS.Surface,
+    borderWidth: 1,
+    borderColor: COLORS.Border,
+    borderRadius: 16,
   },
 });

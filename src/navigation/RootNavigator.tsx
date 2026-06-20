@@ -10,6 +10,7 @@ import { BottomTabs } from './BottomTabs';
 type RootStackParamList = {
   SignIn: undefined;
   SignUp: undefined;
+  Main: undefined;
 };
 
 export type NavigationProp = NativeStackNavigationProp<RootStackParamList>;

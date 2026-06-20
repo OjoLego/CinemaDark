@@ -7,7 +7,6 @@ import { COLORS } from '../utils/colors';
 import { Header } from '../components/molecules/Header';
 import { ICONS } from '../utils/icons';
 import { AppFontFamily } from '../components/atoms/Typography';
-import { HomeHeroBanner } from '../components/organisms/HomeHeroBanner';
 import { Spacer } from '../components/atoms/Spacer';
 import { NowPlayingSection } from '../components/organisms/NowPlayingSection';
 import { TopRatedSection } from '../components/organisms/TopRatedSection';
@@ -24,8 +23,12 @@ import { useTmdbImage } from '../hooks/useTmdbImage';
 import { HeroSkeleton } from '../components/skeletons/HeroSkeleton';
 import { MovieCardSkeleton } from '../components/skeletons/MovieCardSkeleton';
 import { useHomeData } from '../hooks/useHomeData';
+import { useNavigation } from '@react-navigation/native';
+import { HomeNavigationProp } from '../navigation/HomeStack';
+import { HomeHeroBanner } from '../components/organisms/HeroBanner/HomeHeroBanner';
 
 const Home = () => {
+  const navigation = useNavigation<HomeNavigationProp>();
   const dispatch = useDispatch<AppDispatch>();
   const home = useHomeData();
 
@@ -96,6 +99,11 @@ const Home = () => {
             title={home.heroMovie.title}
             description={home.heroMovie.overview}
             rating={home.heroMovie.vote_average}
+            onMoreInfo={() =>
+              navigation.navigate('Details', {
+                movieId: home.heroMovie.id,
+              })
+            }
           />
         ) : null}
 
@@ -109,7 +117,11 @@ const Home = () => {
           <NowPlayingSection
             title="Now Playing"
             movies={home.nowPlaying}
-            onMoviePress={movie => console.log(movie.id)}
+            onMoviePress={movie =>
+              navigation.navigate('Details', {
+                movieId: movie.id,
+              })
+            }
           />
         ) : null}
 
@@ -126,7 +138,11 @@ const Home = () => {
             actionText="View All"
             movies={home.topRated}
             onActionPress={() => console.log('View All')}
-            onMoviePress={movie => console.log(movie.id)}
+            onMoviePress={movie =>
+              navigation.navigate('Details', {
+                movieId: movie.id,
+              })
+            }
           />
         ) : null}
       </ScrollView>
