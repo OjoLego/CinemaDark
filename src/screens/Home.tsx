@@ -137,7 +137,7 @@ const Home = () => {
             title="Top Rated"
             actionText="View All"
             movies={home.topRated}
-            onActionPress={() => console.log('View All')}
+            onActionPress={() => navigation.navigate('TopRatedMovieList')}
             onMoviePress={movie =>
               navigation.navigate('Details', {
                 movieId: movie.id,

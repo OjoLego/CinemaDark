@@ -7,6 +7,7 @@ import Home from '../screens/Home';
 import Details from '../screens/Details';
 import { RouteProp } from '@react-navigation/native';
 import CastList from '../screens/CastList';
+import TopRatedMovieList from '../screens/TopRatedMovieList';
 
 export type HomeStackParamList = {
   Home: undefined;
@@ -16,6 +17,7 @@ export type HomeStackParamList = {
   CastList: {
     movieId: number;
   };
+  TopRatedMovieList: undefined;
 };
 
 export type HomeNavigationProp = NativeStackNavigationProp<
@@ -35,5 +37,6 @@ export const HomeStack = createNativeStackNavigator<HomeStackParamList>({
     Home,
     Details,
     CastList,
+    TopRatedMovieList,
   },
 });
