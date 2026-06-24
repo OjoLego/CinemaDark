@@ -15,7 +15,6 @@ import { Spacer } from '../components/atoms/Spacer';
 
 const TopRatedMovieList = () => {
   const { getImageUrl } = useTmdbImage();
-
   const navigation = useNavigation<HomeNavigationProp>();
 
   const home = useSelector(homeSelector);
