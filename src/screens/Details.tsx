@@ -1,5 +1,5 @@
-import { ScrollView, StyleSheet, View } from 'react-native';
-import React, { useEffect, useMemo } from 'react';
+import { Modal, ScrollView, StyleSheet, View } from 'react-native';
+import React, { useEffect, useMemo, useState } from 'react';
 import { COLORS } from '../utils/colors';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { AppFontFamily, Typography } from '../components/atoms/Typography';
@@ -24,9 +24,11 @@ import { useTmdbImage } from '../hooks/useTmdbImage';
 import {
   fetchMovieCredits,
   fetchMovieDetails,
+  fetchMovieTrailer,
 } from '../redux/thunks/detailsThunk';
 import { HeroSkeleton } from '../components/skeletons/HeroSkeleton';
 import { SynopsisSkeleton } from '../components/skeletons/SynopsisSkeleton';
+import YoutubePlayer from 'react-native-youtube-iframe';
 
 const Details = () => {
   const route = useRoute<DetailsRouteProp>();
@@ -41,7 +43,6 @@ const Details = () => {
     () => selectMovieDetailsViewModel(movieId),
     [movieId],
   );
-
   const movie = useSelector(movieSelector);
 
   useEffect(() => {
@@ -50,6 +51,24 @@ const Details = () => {
       dispatch(fetchMovieCredits(movieId));
     }
   }, [dispatch, movieId, movie]);
+
+  const [showTrailer, setShowTrailer] = useState(false);
+  const [videoId, setVideoId] = useState('');
+
+  const handleTrailerPress = async () => {
+    const result = await dispatch(fetchMovieTrailer(movieId));
+
+    if (!fetchMovieTrailer.fulfilled.match(result)) {
+      return;
+    }
+
+    if (!result.payload) {
+      return;
+    }
+
+    setVideoId(result.payload.key);
+    setShowTrailer(true);
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -64,6 +83,24 @@ const Details = () => {
         leftIcon={<ICONS.Left_Arrow />}
         onLeftPress={() => navigation.goBack()}
       />
+      <Modal
+        visible={showTrailer}
+        animationType="slide"
+        onRequestClose={() => setShowTrailer(false)}
+      >
+        <SafeAreaView style={styles.modal}>
+          <Spacer height={24} />
+          <YoutubePlayer height={300} play videoId={videoId} />
+          <SecondaryButton
+            title="Close"
+            onPress={() => {
+              setShowTrailer(false);
+              setVideoId('');
+            }}
+          />
+        </SafeAreaView>
+      </Modal>
+
       <ScrollView showsVerticalScrollIndicator={false}>
         {details.loadingMovie ? (
           <HeroSkeleton />
@@ -120,7 +157,7 @@ const Details = () => {
                 <View style={styles.actionButtonWrapper}>
                   <SecondaryButton
                     title="Trailer"
-                    onPress={() => console.log('Trailer')}
+                    onPress={handleTrailerPress}
                   />
                 </View>
               </View>
@@ -201,5 +238,10 @@ const styles = StyleSheet.create({
 
   crewTextWrapper: {
     flex: 1,
+  },
+  modal: {
+    flex: 1,
+    backgroundColor: COLORS.Background,
+    paddingHorizontal: 16,
   },
 });

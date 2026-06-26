@@ -6,7 +6,7 @@ import { COLORS } from '../../../utils/colors';
 import { Rating } from '../../atoms/Rating';
 
 type TopRatedCardProps = {
-  image: string;
+  image?: string;
   title: string;
   rating: number | string;
   tag?: string;

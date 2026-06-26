@@ -4,7 +4,7 @@ import { AppFontFamily, Typography } from '../../atoms/Typography';
 import { COLORS } from '../../../utils/colors';
 
 type TopCastCardProps = {
-  image: string;
+  image?: string;
   actorName: string;
   characterName: string;
 };

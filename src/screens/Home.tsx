@@ -5,7 +5,6 @@ import { useDispatch } from 'react-redux';
 
 import { COLORS } from '../utils/colors';
 import { Header } from '../components/molecules/Header';
-import { ICONS } from '../utils/icons';
 import { AppFontFamily } from '../components/atoms/Typography';
 import { Spacer } from '../components/atoms/Spacer';
 import { NowPlayingSection } from '../components/organisms/NowPlayingSection';
@@ -75,12 +74,6 @@ const Home = () => {
           fontSize: 32,
           color: COLORS.Primary,
         }}
-        rightIcons={[
-          {
-            icon: <ICONS.Search />,
-            onPress: () => console.log('Search pressed'),
-          },
-        ]}
       />
 
       <ScrollView

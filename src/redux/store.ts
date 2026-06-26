@@ -2,6 +2,7 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import homeReducer from './slices/homeSlice';
 import tmdbReducer from './slices/configSlice';
 import detailsReducer from './slices/detailsSlice';
+import searchReducer from './slices/searchSlice';
 import {
   FLUSH,
   PAUSE,
@@ -18,13 +19,14 @@ const combinedReducers = combineReducers({
   tmdb: tmdbReducer,
   home: homeReducer,
   details: detailsReducer,
+  search: searchReducer,
 });
 
 const persistConfig = {
   key: 'root',
   version: 1,
   storage: EncryptedStorage,
-  // blacklist: ['tmdb'],
+  blacklist: ['search'],
 };
 
 const persistedReducer = persistReducer(persistConfig, combinedReducers);

@@ -47,7 +47,7 @@ const CastList = () => {
         columnWrapperStyle={styles.row}
         renderItem={({ item }) => (
           <TopCastCard
-            image={getImageUrl(item.profile_path, 'w500') ?? ''}
+            image={getImageUrl(item.profile_path, 'w500')}
             actorName={item.original_name}
             characterName={item.character}
           />

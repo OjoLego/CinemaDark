@@ -5,10 +5,14 @@ import {
 
 import Search from '../screens/Search';
 import Details from '../screens/Details';
+import CastList from '../screens/CastList';
 
 export type SearchStackParamList = {
   Search: undefined;
   Details: {
+    movieId: number;
+  };
+  CastList: {
     movieId: number;
   };
 };
@@ -25,5 +29,6 @@ export const SearchStack = createNativeStackNavigator({
   screens: {
     Search,
     Details,
+    CastList,
   },
 });
