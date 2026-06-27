@@ -1,3 +1,4 @@
+import Delete from '../../assets/svgs/delete.svg';
 import Email from '../../assets/svgs/email.svg';
 import Home from '../../assets/svgs/home.svg';
 import Home_Fill from '../../assets/svgs/home_fill.svg';
@@ -16,6 +17,7 @@ import Watch_List_Fill from '../../assets/svgs/watch_list_fill.svg';
 import Watch_List_Neutral from '../../assets/svgs/watch_list_neutral.svg';
 
 export const ICONS = {
+  Delete,
   Email,
   Eye_Open,
   Home,

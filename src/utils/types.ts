@@ -108,3 +108,12 @@ export type MovieVideosResponse = {
   id: number;
   results: MovieVideo[];
 };
+
+export type WatchListMovie = {
+  id: number;
+  title: string;
+  genres: string[];
+  duration: string;
+  rating: number;
+  poster_path: string;
+};

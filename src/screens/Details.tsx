@@ -29,6 +29,8 @@ import { HeroSkeleton } from '../components/skeletons/HeroSkeleton';
 import { SynopsisSkeleton } from '../components/skeletons/SynopsisSkeleton';
 import YoutubePlayer from 'react-native-youtube-iframe';
 import { useTrailer } from '../hooks/useTrailer';
+import { makeIsInWatchListSelector } from '../redux/selectors/watchListSelector';
+import { toggleWatchList } from '../redux/slices/watchListSlice';
 
 const Details = () => {
   const route = useRoute<DetailsRouteProp>();
@@ -56,6 +58,17 @@ const Details = () => {
 
   const handleTrailerPress = () => {
     playTrailer(movieId);
+  };
+
+  const isInWatchListSelector = useMemo(
+    () => makeIsInWatchListSelector(movieId),
+    [movieId],
+  );
+
+  const isInWatchList = useSelector(isInWatchListSelector);
+
+  const handleWatchList = () => {
+    dispatch(toggleWatchList(movieId));
   };
 
   return (
@@ -127,12 +140,22 @@ const Details = () => {
               <View style={styles.actionButtons}>
                 <View style={styles.actionButtonWrapper}>
                   <PrimaryButton
-                    title="Add to Watchlist"
-                    leftIcon={<ICONS.Watch_List_Neutral />}
-                    onPress={() => console.log('Watchlist')}
+                    title={
+                      isInWatchList
+                        ? 'Remove from Watchlist'
+                        : 'Add to Watchlist'
+                    }
+                    leftIcon={
+                      isInWatchList ? (
+                        <ICONS.Watch_List_Neutral />
+                      ) : (
+                        <ICONS.Watch_List />
+                      )
+                    }
+                    onPress={handleWatchList}
                     paddingVertical={12}
                     titleFontFamily={AppFontFamily.InterMedium}
-                    titleFontSize={16}
+                    titleFontSize={14}
                   />
                 </View>
 

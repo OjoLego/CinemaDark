@@ -30,6 +30,7 @@ export const BottomTabs = createBottomTabNavigator({
     HomeTab: {
       screen: HomeStack,
       options: {
+        tabBarLabel: 'Home',
         tabBarIcon: ({ focused }) =>
           focused ? <ICONS.Home_Fill /> : <ICONS.Home />,
       },
@@ -38,6 +39,7 @@ export const BottomTabs = createBottomTabNavigator({
     SearchTab: {
       screen: SearchStack,
       options: {
+        tabBarLabel: 'Search',
         tabBarIcon: ({ focused }) =>
           focused ? <ICONS.Search_Fill /> : <ICONS.Search />,
       },
@@ -46,6 +48,7 @@ export const BottomTabs = createBottomTabNavigator({
     WatchListTab: {
       screen: WatchListStack,
       options: {
+        tabBarLabel: 'Watch List',
         tabBarIcon: ({ focused }) =>
           focused ? <ICONS.Watch_List_Fill /> : <ICONS.Watch_List />,
       },

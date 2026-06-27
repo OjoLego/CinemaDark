@@ -3,6 +3,7 @@ import homeReducer from './slices/homeSlice';
 import tmdbReducer from './slices/configSlice';
 import detailsReducer from './slices/detailsSlice';
 import searchReducer from './slices/searchSlice';
+import watchListReducer from './slices/watchListSlice';
 import {
   FLUSH,
   PAUSE,
@@ -20,6 +21,7 @@ const combinedReducers = combineReducers({
   home: homeReducer,
   details: detailsReducer,
   search: searchReducer,
+  watchList: watchListReducer,
 });
 
 const persistConfig = {
