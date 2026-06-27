@@ -1,6 +1,6 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { RootState } from '../store';
-import { homeSelector } from './homeSelector';
+import { genreMapSelector, homeSelector } from './homeSelector';
 
 export const searchSelector = (state: RootState) => state.search;
 
@@ -33,15 +33,19 @@ export const searchResultsSelector = createSelector(
 );
 
 export const filteredSearchResultsSelector = createSelector(
-  [searchResultsSelector, selectedGenreSelector],
-  (movies, selectedGenre) => {
-    if (selectedGenre === 'all') {
-      return movies;
-    }
+  [searchResultsSelector, selectedGenreSelector, genreMapSelector],
+  (movies, selectedGenre, genreMap) => {
+    const filtered =
+      selectedGenre === 'all'
+        ? movies
+        : movies.filter(movie =>
+            movie.genre_ids?.includes(Number(selectedGenre)),
+          );
 
-    const genreId = Number(selectedGenre);
-
-    return movies.filter(movie => movie.genre_ids?.includes(genreId));
+    return filtered.map(movie => ({
+      ...movie,
+      genreText: movie.genre_ids?.map(id => genreMap[id]).filter(Boolean) ?? [],
+    }));
   },
 );
 

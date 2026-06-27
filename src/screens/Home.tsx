@@ -1,5 +1,11 @@
 import React, { useEffect } from 'react';
-import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
+import {
+  Modal,
+  RefreshControl,
+  ScrollView,
+  StyleSheet,
+  View,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
 
@@ -25,6 +31,9 @@ import { useHomeData } from '../hooks/useHomeData';
 import { useNavigation } from '@react-navigation/native';
 import { HomeNavigationProp } from '../navigation/HomeStack';
 import { HomeHeroBanner } from '../components/organisms/HeroBanner/HomeHeroBanner';
+import { useTrailer } from '../hooks/useTrailer';
+import { SecondaryButton } from '../components/molecules/Button/SecondaryButton';
+import YoutubePlayer from 'react-native-youtube-iframe';
 
 const Home = () => {
   const navigation = useNavigation<HomeNavigationProp>();
@@ -32,6 +41,7 @@ const Home = () => {
   const home = useHomeData();
 
   const { getImageUrl } = useTmdbImage();
+  const { showTrailer, videoId, playTrailer, closeTrailer } = useTrailer();
 
   function onRefresh() {
     dispatch(fetchTrendingMovies());
@@ -76,6 +86,20 @@ const Home = () => {
         }}
       />
 
+      <Modal
+        visible={showTrailer}
+        animationType="slide"
+        onRequestClose={closeTrailer}
+      >
+        <SafeAreaView style={styles.modal}>
+          <Spacer height={24} />
+
+          <YoutubePlayer height={300} play videoId={videoId} />
+
+          <SecondaryButton title="Close" onPress={closeTrailer} />
+        </SafeAreaView>
+      </Modal>
+
       <ScrollView
         showsVerticalScrollIndicator={false}
         refreshControl={
@@ -92,6 +116,7 @@ const Home = () => {
             title={home.heroMovie.title}
             description={home.heroMovie.overview}
             rating={home.heroMovie.vote_average}
+            onPlayTrailer={() => playTrailer(home.heroMovie.id)}
             onMoreInfo={() =>
               navigation.navigate('Details', {
                 movieId: home.heroMovie.id,
@@ -171,5 +196,14 @@ const styles = StyleSheet.create({
   marginVertical: {
     marginVertical: 10,
   },
-  skeleton: { flexDirection: 'row', gap: 12, paddingHorizontal: 16 },
+  skeleton: {
+    flexDirection: 'row',
+    gap: 12,
+    paddingHorizontal: 16,
+  },
+  modal: {
+    flex: 1,
+    backgroundColor: COLORS.Background,
+    paddingHorizontal: 16,
+  },
 });

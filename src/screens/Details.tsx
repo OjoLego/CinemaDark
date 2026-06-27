@@ -1,5 +1,5 @@
 import { Modal, ScrollView, StyleSheet, View } from 'react-native';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { COLORS } from '../utils/colors';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { AppFontFamily, Typography } from '../components/atoms/Typography';
@@ -24,11 +24,11 @@ import { useTmdbImage } from '../hooks/useTmdbImage';
 import {
   fetchMovieCredits,
   fetchMovieDetails,
-  fetchMovieTrailer,
 } from '../redux/thunks/detailsThunk';
 import { HeroSkeleton } from '../components/skeletons/HeroSkeleton';
 import { SynopsisSkeleton } from '../components/skeletons/SynopsisSkeleton';
 import YoutubePlayer from 'react-native-youtube-iframe';
+import { useTrailer } from '../hooks/useTrailer';
 
 const Details = () => {
   const route = useRoute<DetailsRouteProp>();
@@ -52,22 +52,10 @@ const Details = () => {
     }
   }, [dispatch, movieId, movie]);
 
-  const [showTrailer, setShowTrailer] = useState(false);
-  const [videoId, setVideoId] = useState('');
+  const { showTrailer, videoId, playTrailer, closeTrailer } = useTrailer();
 
-  const handleTrailerPress = async () => {
-    const result = await dispatch(fetchMovieTrailer(movieId));
-
-    if (!fetchMovieTrailer.fulfilled.match(result)) {
-      return;
-    }
-
-    if (!result.payload) {
-      return;
-    }
-
-    setVideoId(result.payload.key);
-    setShowTrailer(true);
+  const handleTrailerPress = () => {
+    playTrailer(movieId);
   };
 
   return (
@@ -86,18 +74,12 @@ const Details = () => {
       <Modal
         visible={showTrailer}
         animationType="slide"
-        onRequestClose={() => setShowTrailer(false)}
+        onRequestClose={closeTrailer}
       >
         <SafeAreaView style={styles.modal}>
           <Spacer height={24} />
           <YoutubePlayer height={300} play videoId={videoId} />
-          <SecondaryButton
-            title="Close"
-            onPress={() => {
-              setShowTrailer(false);
-              setVideoId('');
-            }}
-          />
+          <SecondaryButton title="Close" onPress={closeTrailer} />
         </SafeAreaView>
       </Modal>
 

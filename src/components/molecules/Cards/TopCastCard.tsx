@@ -14,9 +14,26 @@ export const TopCastCard = ({
   actorName,
   characterName,
 }: TopCastCardProps) => {
+  const initials = actorName
+    .split(' ')
+    .filter(Boolean)
+    .map(name => name.charAt(0).toUpperCase())
+    .join('');
   return (
     <View style={styles.container}>
-      <Image source={{ uri: image }} style={styles.image} />
+      {image ? (
+        <Image source={{ uri: image }} style={styles.image} />
+      ) : (
+        <View style={styles.placeholder}>
+          <Typography
+            fontFamily={AppFontFamily.InterBold}
+            fontSize={24}
+            color={COLORS.text2}
+          >
+            {initials}
+          </Typography>
+        </View>
+      )}
 
       <Typography
         fontFamily={AppFontFamily.InterMedium}
@@ -63,5 +80,16 @@ const styles = StyleSheet.create({
     marginTop: 4,
     textAlign: 'center',
     lineHeight: 16,
+  },
+
+  placeholder: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    borderWidth: 1,
+    borderColor: COLORS.Border,
+    backgroundColor: COLORS.Background,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

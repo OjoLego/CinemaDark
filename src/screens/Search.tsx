@@ -22,11 +22,11 @@ import {
 } from '../redux/slices/searchSlice';
 import { searchMovies } from '../redux/thunks/searchThunk';
 import { AppDispatch } from '../redux/store';
-import { TopRatedCard } from '../components/molecules/Cards/TopRatedCard';
 import { useTmdbImage } from '../hooks/useTmdbImage';
 import { useNavigation } from '@react-navigation/native';
 import { SearchNavigationProp } from '../navigation/SearchStack';
 import { TopRatedCardSkeleton } from '../components/skeletons/TopRatedSkeleton';
+import { SearchCard } from '../components/molecules/Cards/SearchCard';
 
 const Search = () => {
   const { getImageUrl } = useTmdbImage();
@@ -124,11 +124,10 @@ const Search = () => {
             keyExtractor={item => String(item.id)}
             renderItem={({ item }) => (
               <View style={styles.item}>
-                <TopRatedCard
+                <SearchCard
                   image={getImageUrl(item.poster_path, 'w500')}
                   title={item.title}
-                  rating={item.vote_average.toFixed(1)}
-                  variant="compact"
+                  genre={item.genreText}
                   onPress={() =>
                     navigation.navigate('Details', {
                       movieId: item.id,
