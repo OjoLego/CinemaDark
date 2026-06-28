@@ -39,7 +39,7 @@ const WatchList = () => {
               title={item.title}
               genres={item.genres}
               duration={item.duration}
-              rating={item.rating}
+              rating={item.rating.toFixed(1)}
               onDelete={() => dispatch(toggleWatchList(item.id))}
               onPress={() =>
                 navigation.navigate('Details', {

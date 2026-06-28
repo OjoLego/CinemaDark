@@ -6,6 +6,7 @@ import { Navigation } from './src/navigation/RootNavigator';
 import { AppDispatch, persistor, store } from './src/redux/store';
 import { fetchTmdbConfig } from './src/redux/thunks/configThunk';
 import { PersistGate } from 'redux-persist/integration/react';
+import Toast from 'react-native-toast-message';
 
 function AppBootstrap() {
   const dispatch = useDispatch<AppDispatch>();
@@ -17,6 +18,7 @@ function AppBootstrap() {
   return (
     <SafeAreaProvider>
       <Navigation />
+      <Toast />
     </SafeAreaProvider>
   );
 }

@@ -5,10 +5,14 @@ import {
 
 import WatchList from '../screens/WatchList';
 import Details from '../screens/Details';
+import CastList from '../screens/CastList';
 
 export type WatchListStackParamList = {
   WatchList: undefined;
   Details: {
+    movieId: number;
+  };
+  CastList: {
     movieId: number;
   };
 };
@@ -25,5 +29,6 @@ export const WatchListStack = createNativeStackNavigator({
   screens: {
     WatchList,
     Details,
+    CastList,
   },
 });
